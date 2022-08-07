@@ -16,7 +16,6 @@ class _DesktopLayoutState extends State<DesktopLayout> {
     double width = MediaQuery.of(context).size.width;
     TextEditingController password = TextEditingController();
     TextEditingController email = TextEditingController();
-    GlobalKey<FormState> formkey = GlobalKey<FormState>();
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: CupertinoColors.white,
@@ -61,7 +60,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                 ),
                 SizedBox(height: 40),
                 Padding(
-                  padding: EdgeInsets.only(left:10.0, right:10),
+                  padding: EdgeInsets.only(left: 10.0, right: 10),
                   child: Text(
                     "Enter Your Email Address and Email's password to verify your account !",
                     style: TextStyle(
@@ -143,24 +142,24 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                     },
                   ),
                 ),
+                const SizedBox(height: 30),
+                TextButton(
+                  child: const Text(
+                    'Continue',
+                    style: TextStyle(fontSize: 23, color: Colors.blue),
+                  ),
+                  onPressed: () {
+                    debugPrint(
+                        'Email:${email.text}, Password:${password.text}');
+                  },
+                ),
               ]),
             ),
-          ),
-          const SizedBox(height: 30),
-          TextButton(
-            child: const Text(
-              'Continue',
-              style: TextStyle(fontSize: 23, color: Colors.blue),
-            ),
-            onPressed: () {
-              if (formkey.currentState!.validate()) {
-              }
-            },
           ),
           const SizedBox(height: 10),
           TextButton(
             child: const Text('Manage your Apple account'),
-            onPressed: () {},
+            onPressed: () async {},
           ),
         ]));
   }

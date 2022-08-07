@@ -21,7 +21,7 @@ class _TabletScreenState extends State<TabletScreen> {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
         backgroundColor: CupertinoColors.white,
-        body: Column(children: [
+        body: ListView(children: [
           navBar(),
           Padding(
             padding: const EdgeInsets.only(top: 100.0),
@@ -88,10 +88,11 @@ class _TabletScreenState extends State<TabletScreen> {
                                   size: 40,
                                   color: Colors.grey,
                                 ),
-                                onPressed: () => Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                             PassLayout(email: emailController.text,)))),
+                                onPressed: () => Navigator.of(context)
+                                    .push(MaterialPageRoute(
+                                        builder: (context) => PassLayout(
+                                              email: emailController.text,
+                                            )))),
                           ),
                         ),
                         validator: (ifemail) =>

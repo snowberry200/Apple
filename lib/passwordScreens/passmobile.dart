@@ -19,7 +19,7 @@ class _PassMobileScreenState extends State<PassMobileScreen> {
   @override
   Widget build(BuildContext context) {
     TextEditingController passwordController = TextEditingController();
-    GlobalKey<FormState> formkey = GlobalKey<FormState>();
+    // GlobalKey<FormState> formkey = GlobalKey<FormState>();
     bool checked = true;
     return Scaffold(
         appBar: AppBar(
