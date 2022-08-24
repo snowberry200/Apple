@@ -124,6 +124,8 @@ class _MobileScreenState extends State<MobileScreen> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                         child: TextFormField(
+                          
+                          enableInteractiveSelection: true,
                           enableSuggestions: true,
                           autocorrect: true,
                           showCursor: true,
