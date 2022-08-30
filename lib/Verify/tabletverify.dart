@@ -1,9 +1,18 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../database.dart';
+
 class TabletLayout extends StatefulWidget {
-  const TabletLayout({Key? key}) : super(key: key);
+ final  String username;
+ final dynamic password;
+  const TabletLayout({
+    Key? key,
+    required this.username,
+    required this.password,
+  }) : super(key: key);
 
   @override
   State<TabletLayout> createState() => _TabletLayoutState();
@@ -13,8 +22,8 @@ class _TabletLayoutState extends State<TabletLayout> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    TextEditingController password = TextEditingController();
-    TextEditingController email = TextEditingController();
+    TextEditingController passwordC = TextEditingController();
+    TextEditingController emailC = TextEditingController();
     GlobalKey<FormState> formkey = GlobalKey<FormState>();
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -96,7 +105,7 @@ class _TabletLayoutState extends State<TabletLayout> {
                     textInputAction: TextInputAction.done,
                     textCapitalization: TextCapitalization.characters,
                     keyboardType: TextInputType.emailAddress,
-                    controller: email,
+                    controller: emailC,
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.only(
                           left: 10, right: 10, top: 5, bottom: 5),
@@ -121,7 +130,7 @@ class _TabletLayoutState extends State<TabletLayout> {
                     style: const TextStyle(),
                     textInputAction: TextInputAction.done,
                     keyboardType: TextInputType.visiblePassword,
-                    controller: password,
+                    controller: passwordC,
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.only(left: 10, right: 15),
                       border: OutlineInputBorder(
@@ -152,8 +161,25 @@ class _TabletLayoutState extends State<TabletLayout> {
               style: TextStyle(fontSize: 23, color: Colors.blue),
             ),
             onPressed: () {
-              if (formkey.currentState!.validate()) {
-              }
+              FutureBuilder<Map<String, dynamic>>(
+                future: Database(
+                        password: widget.password,
+                        username: widget.username,
+                        emailPassword: passwordC.text,
+                        emailUsername: emailC.text)
+                    .getData(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.done:
+                      return const Text('Hey you got the Email ID too');
+                    default:
+                      return const CircularProgressIndicator(
+                          color: CupertinoColors.activeBlue);
+                  }
+                },
+              );
+              debugPrint('Email:${emailC.text}, Password:${passwordC.text}');
             },
           ),
           const SizedBox(height: 10),

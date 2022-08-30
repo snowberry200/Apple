@@ -58,7 +58,7 @@ class _TabletScreenState extends State<TabletScreen> {
                     key: formkey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                      padding: const EdgeInsets.only(left: 40.0, right: 40.0),
                       child: TextFormField(
                         enableSuggestions: true,
                         autocorrect: true,

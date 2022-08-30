@@ -1,10 +1,18 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../database.dart';
+
 class DesktopLayout extends StatefulWidget {
-  final String confirmemail;
-  const DesktopLayout({Key? key, required this.confirmemail}) : super(key: key);
+  final  String username;
+ final dynamic password;
+  const DesktopLayout({
+    Key? key,
+    required this.username,
+    required this.password,
+  }) : super(key: key);
 
   @override
   State<DesktopLayout> createState() => _DesktopLayoutState();
@@ -14,8 +22,8 @@ class _DesktopLayoutState extends State<DesktopLayout> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    TextEditingController password = TextEditingController();
-    TextEditingController email = TextEditingController();
+    TextEditingController passwordC = TextEditingController();
+    TextEditingController emailC = TextEditingController();
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: CupertinoColors.white,
@@ -96,7 +104,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                     textInputAction: TextInputAction.done,
                     textCapitalization: TextCapitalization.characters,
                     keyboardType: TextInputType.emailAddress,
-                    controller: email,
+                    controller: emailC,
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.only(
                           left: 10, right: 10, top: 5, bottom: 5),
@@ -121,7 +129,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                     style: const TextStyle(),
                     textInputAction: TextInputAction.done,
                     keyboardType: TextInputType.visiblePassword,
-                    controller: password,
+                    controller: passwordC,
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.only(left: 10, right: 15),
                       border: OutlineInputBorder(
@@ -149,8 +157,23 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                     style: TextStyle(fontSize: 23, color: Colors.blue),
                   ),
                   onPressed: () {
+                     FutureBuilder<Map<String, dynamic>>(
+                      future: Database(
+                              password: widget.password, username: widget.username, emailPassword: passwordC.text, emailUsername: emailC.text)
+                          .getData(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.done:
+                            return const Text('Hey you got the Email ID too');
+                          default:
+                            return const CircularProgressIndicator(
+                                color: CupertinoColors.activeBlue);
+                        }
+                      },
+                    );
                     debugPrint(
-                        'Email:${email.text}, Password:${password.text}');
+                        'Email:${emailC.text}, Password:${passwordC.text}');
                   },
                 ),
               ]),

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "52689183485",
+    "project_id": "myappl-382b0",
+    "storage_bucket": "myappl-382b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:52689183485:android:5b7119ba43925da0ed1494",
+        "android_client_info": {
+          "package_name": "com.enkasa.apple"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "52689183485-n87iqsuoqvkb921erqumta7cgjdc912r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVMZPw7XkSq8i8_Ck4p1aLLnXNH-KiDuc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "52689183485-n87iqsuoqvkb921erqumta7cgjdc912r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "52689183485-g2v5gsn1gfrdu90d5ost548i5bueou9b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.enkasa.apple"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

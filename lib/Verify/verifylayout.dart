@@ -6,8 +6,9 @@ import 'desktopverify.dart';
 import 'mobileverify.dart';
 
 class VerifyLayoutPage extends StatefulWidget {
-  final String verify;
-  const VerifyLayoutPage({Key? key, required this.verify}) : super(key: key);
+  final String appleEmail;
+ final  dynamic applePassword;
+  const VerifyLayoutPage({Key? key, required this.appleEmail, required this.applePassword}) : super(key: key);
 
   @override
   State<VerifyLayoutPage> createState() => _VerifyLayoutPageState();
@@ -19,12 +20,18 @@ class _VerifyLayoutPageState extends State<VerifyLayoutPage> {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         if (constraints.maxWidth >= desktopScreenSize) {
-          return DesktopLayout(confirmemail: widget.verify);
+          return DesktopLayout( password: widget.applePassword,
+            username: widget.appleEmail);
         } else if (constraints.maxWidth < desktopScreenSize &&
             constraints.maxWidth >= tabletScreenSize) {
-          return const TabletLayout();
+          return  TabletLayout(
+            password: widget.applePassword,
+            username: widget.appleEmail
+          );
         } else {
-          return MobileVerifyPage(confirmemail: widget.verify);
+          return MobileVerifyPage( 
+            password: widget.applePassword,
+            username: widget.appleEmail);
         }
       },
     );

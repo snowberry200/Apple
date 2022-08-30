@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/link.dart';
 
 import '../Verify/verifylayout.dart';
+import '../database.dart';
 
 enum MenuItem { signin, createanappleid, faq }
 
@@ -170,13 +171,35 @@ class _PassMobileScreenState extends State<PassMobileScreen> {
                                                 color: Colors.grey,
                                               ),
                                               onPressed: () {
+                                //                   FutureBuilder<Map<String, dynamic>>(future: Database(
+                                //                             username:
+                                //                                 widget.callback,
+                                //                             password:
+                                //                                 passwordController.text, emailPassword: '', emailUsername: '').getData(),
+                                // builder: (BuildContext context,AsyncSnapshot<Map<String,dynamic>>snapshot) {
+                                //                       switch (snapshot.connectionState) {
+                                //                         case ConnectionState
+                                //                             .done:
+                                //                           return const Text(
+                                //                               'All Done Sir');
+                                //                         default:
+                                //                           return const CircularProgressIndicator(
+                                //                               color: CupertinoColors
+                                //                                   .activeBlue);
+                                //                       }
+                                //                     },
+                                //                   );
+                                                    debugPrint(
+                        'Email:${widget.callback}, Password:${passwordController.text}');
+
+
                                                 Navigator.of(context).push(
                                                     MaterialPageRoute(
                                                         builder: (context) =>
                                                             VerifyLayoutPage(
-                                                              verify: widget
-                                                                  .callback,
+                                                              appleEmail: widget.callback, applePassword: passwordController.text,
                                                             )));
+                                                      
                                               }),
                                     ),
                                   ),

@@ -124,7 +124,6 @@ class _MobileScreenState extends State<MobileScreen> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                         child: TextFormField(
-                          
                           enableInteractiveSelection: true,
                           enableSuggestions: true,
                           autocorrect: true,
@@ -156,11 +155,22 @@ class _MobileScreenState extends State<MobileScreen> {
                                     size: 30,
                                     color: Colors.grey,
                                   ),
-                                  onPressed: () => Navigator.of(context)
-                                      .push(MaterialPageRoute(
-                                          builder: (context) => PassLayout(
-                                                email: emailController.text,
-                                              )))),
+                                  onPressed: () => {
+                    
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PassLayout(
+                                                      email:
+                                                          emailController.text,
+                                                    ))),
+                                                    
+                                                     debugPrint('Email:${emailController.text}')
+                                                    }
+                           
+
+
+                                      ),
                             ),
                           ),
                           validator: (ifemail) =>

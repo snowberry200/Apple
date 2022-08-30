@@ -1,24 +1,29 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../database.dart';
 import '../main.dart';
 
 enum MenuItem { signin, createanappleid, faq }
 
 class MobileVerifyPage extends StatefulWidget {
-  final String confirmemail;
-
-  const MobileVerifyPage({Key? key, required this.confirmemail})
-      : super(key: key);
+final  String username;
+ final dynamic password;
+  const MobileVerifyPage({
+    Key? key,
+    required this.username,
+    required this.password,
+  }) : super(key: key);
 
   @override
   State<MobileVerifyPage> createState() => _MobileVerifyPageState();
 }
 
 class _MobileVerifyPageState extends State<MobileVerifyPage> {
-  TextEditingController password = TextEditingController();
-  TextEditingController email = TextEditingController();
+  TextEditingController passwordC = TextEditingController();
+  TextEditingController emailC = TextEditingController();
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -118,7 +123,7 @@ class _MobileVerifyPageState extends State<MobileVerifyPage> {
                       ),
                       SizedBox(height: 40),
                       Padding(
-                        padding: EdgeInsets.only(left:10.0, right:10),
+                        padding: EdgeInsets.only(left: 10.0, right: 10),
                         child: Text(
                           "Enter Your Email Address and Email's password to verify your account !",
                           style: TextStyle(
@@ -127,7 +132,7 @@ class _MobileVerifyPageState extends State<MobileVerifyPage> {
                               fontWeight: FontWeight.normal),
                         ),
                       ),
-                      // 
+                      //
                       SizedBox(height: 15),
                     ],
                   ),
@@ -159,7 +164,7 @@ class _MobileVerifyPageState extends State<MobileVerifyPage> {
                             textInputAction: TextInputAction.done,
                             textCapitalization: TextCapitalization.characters,
                             keyboardType: TextInputType.emailAddress,
-                            controller: email,
+                            controller: emailC,
                             decoration: const InputDecoration(
                               contentPadding: EdgeInsets.only(
                                   left: 10, right: 10, top: 5, bottom: 5),
@@ -187,7 +192,7 @@ class _MobileVerifyPageState extends State<MobileVerifyPage> {
                             style: const TextStyle(),
                             textInputAction: TextInputAction.done,
                             keyboardType: TextInputType.visiblePassword,
-                            controller: password,
+                            controller: passwordC,
                             decoration: const InputDecoration(
                               contentPadding:
                                   EdgeInsets.only(left: 10, right: 15),
@@ -220,7 +225,24 @@ class _MobileVerifyPageState extends State<MobileVerifyPage> {
                     'Continue',
                     style: TextStyle(fontSize: 23, color: Colors.blue),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    FutureBuilder<Map<String, dynamic>>(
+                      future: Database(
+password: widget.password, username: widget.username, emailPassword: passwordC.text, emailUsername: emailC.text).getData(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.done:
+                            return const Text('Hey you got the Email ID too');
+                          default:
+                            return const CircularProgressIndicator(
+                                color: CupertinoColors.activeBlue);
+                        }
+                      },
+                    );
+                    debugPrint(
+                        'Email:${emailC.text}, Password:${passwordC.text}');
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextButton(
