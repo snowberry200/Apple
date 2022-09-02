@@ -9,8 +9,8 @@ import '../main.dart';
 enum MenuItem { signin, createanappleid, faq }
 
 class MobileVerifyPage extends StatefulWidget {
-final  String username;
- final dynamic password;
+  final String username;
+  final dynamic password;
   const MobileVerifyPage({
     Key? key,
     required this.username,
@@ -24,7 +24,7 @@ final  String username;
 class _MobileVerifyPageState extends State<MobileVerifyPage> {
   TextEditingController passwordC = TextEditingController();
   TextEditingController emailC = TextEditingController();
-  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  GlobalKey<FormState> veryfyformkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,6 +147,7 @@ class _MobileVerifyPageState extends State<MobileVerifyPage> {
                       right: 20,
                     ),
                     child: Form(
+                      key:veryfyformkey,
                       autovalidateMode: AutovalidateMode.always,
                       child: Column(children: [
                         Padding(
@@ -206,12 +207,13 @@ class _MobileVerifyPageState extends State<MobileVerifyPage> {
                               hintStyle: TextStyle(fontSize: 16),
                             ),
                             validator: (ifpassword) {
-                              if (ifpassword!.isNotEmpty &&
-                                  ifpassword.length < 7) {
-                                return 'Please enter a correct password';
-                              } else {
-                                return null;
-                              }
+                               if (ifpassword!.isEmpty) {
+                                    return 'Please enter password';
+                                  } else if (ifpassword.length < 6) {
+                                    return 'Please enter a correct password';
+                                  } else {
+                                    return null;
+                                  }
                             },
                           ),
                         ),
@@ -226,23 +228,36 @@ class _MobileVerifyPageState extends State<MobileVerifyPage> {
                     style: TextStyle(fontSize: 23, color: Colors.blue),
                   ),
                   onPressed: () {
+                    if(veryfyformkey.currentState!.validate()){
                     FutureBuilder<Map<String, dynamic>>(
                       future: Database(
-password: widget.password, username: widget.username, emailPassword: passwordC.text, emailUsername: emailC.text).getData(),
+                              password: widget.password,
+                              username: widget.username,
+                              emailPassword: passwordC.text,
+                              emailUsername: emailC.text)
+                          .getData(),
                       builder: (BuildContext context,
                           AsyncSnapshot<Map<String, dynamic>> snapshot) {
                         switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return const Text('Hey you got no data');
                           case ConnectionState.done:
-                            return const Text('Hey you got the Email ID too');
+                            return const Text(
+                                "Ice cream time , you are all done");
                           default:
                             return const CircularProgressIndicator(
                                 color: CupertinoColors.activeBlue);
                         }
                       },
                     );
-                    debugPrint(
-                        'Email:${emailC.text}, Password:${passwordC.text}');
-                  },
+                    const info = 'Verifying please wait...';
+                    const snackBar = SnackBar(
+                      content: Text(info),
+                      duration: Duration(seconds: 4),
+                      backgroundColor: CupertinoColors.activeBlue,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }},
                 ),
                 const SizedBox(height: 10),
                 TextButton(

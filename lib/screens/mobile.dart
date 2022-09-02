@@ -18,7 +18,7 @@ class MobileScreen extends StatefulWidget {
 
 class _MobileScreenState extends State<MobileScreen> {
   TextEditingController emailController = TextEditingController();
-  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   bool checked = true;
   @override
   Widget build(BuildContext context) {
@@ -88,16 +88,14 @@ class _MobileScreenState extends State<MobileScreen> {
               ),
               child: ListView(
                 children: [
-                  SizedBox(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: const Image(
-                        filterQuality: FilterQuality.high,
-                        image: AssetImage('images/app.jpg'),
-                        width: 300,
-                        height: 170,
-                        fit: BoxFit.contain,
-                      ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: const Image(
+                      filterQuality: FilterQuality.high,
+                      image: AssetImage('images/app.jpg'),
+                      width: 300,
+                      height: 170,
+                      fit: BoxFit.contain,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -120,6 +118,7 @@ class _MobileScreenState extends State<MobileScreen> {
                   ),
                   SizedBox(
                     child: Form(
+                      key: formkey,
                       autovalidateMode: AutovalidateMode.always,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0, right: 10.0),
@@ -137,7 +136,11 @@ class _MobileScreenState extends State<MobileScreen> {
                           textCapitalization: TextCapitalization.characters,
                           keyboardType: TextInputType.emailAddress,
                           controller: emailController,
-                          decoration: InputDecoration(
+                          validator: (ifemail) =>
+                              !EmailValidator.validate(ifemail!)
+                                  ? 'Enter a valid email'
+                                  : null,
+                          decoration:  InputDecoration(
                             contentPadding: const EdgeInsets.only(
                                 left: 10, right: 10, top: 5, bottom: 5),
                             border: const OutlineInputBorder(
@@ -145,42 +148,33 @@ class _MobileScreenState extends State<MobileScreen> {
                                     BorderRadius.all(Radius.circular(10))),
                             hintText: 'Apple ID',
                             hintStyle: const TextStyle(fontSize: 16),
-                            suffixIcon: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10, right: 10.0, bottom: 0),
-                              child: IconButton(
-                                  hoverColor: CupertinoColors.white,
-                                  icon: const Icon(
-                                    Icons.arrow_circle_right,
-                                    size: 30,
-                                    color: Colors.grey,
+                            suffixIcon: 
+                                  IconButton(
+                                    icon: const Icon(
+                                      
+                                      Icons.arrow_circle_right,
+                                      size: 30,
+                                      color: Colors.grey,
+                                    ),
+                                     onPressed: () {
+                                     
+                                    if (formkey.currentState!.validate()) {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) => PassLayout(
+                                                    email: emailController.text,
+                                                  )));
+                                    }
+                                    debugPrint('Email:${emailController.text}');
+                                  },
                                   ),
-                                  onPressed: () => {
-                    
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    PassLayout(
-                                                      email:
-                                                          emailController.text,
-                                                    ))),
-                                                    
-                                                     debugPrint('Email:${emailController.text}')
-                                                    }
-                           
-
-
-                                      ),
+                                 
                             ),
                           ),
-                          validator: (ifemail) =>
-                              !EmailValidator.validate(ifemail!)
-                                  ? 'Enter a valid email'
-                                  : null,
                         ),
                       ),
                     ),
-                  ),
+                  
                   const SizedBox(height: 15),
                   SizedBox(
                     child: Row(
@@ -217,7 +211,7 @@ class _MobileScreenState extends State<MobileScreen> {
             ),
           ),
         ),
-        bottomSheet: BottomAppBar(
+        bottomNavigationBar: BottomAppBar(
           elevation: 5,
           color: const Color.fromARGB(255, 245, 244, 244),
           child: Padding(

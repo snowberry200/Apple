@@ -30,17 +30,13 @@ class _TabletScreenState extends State<TabletScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: const Expanded(
-                        child: Image(
-                          image: AssetImage('images/app.jpg'),
-                          width: 300,
-                          height: 200,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: const Image(
+                      image: AssetImage('images/app.jpg'),
+                      width: 300,
+                      height: 200,
+                      fit: BoxFit.contain,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -52,53 +48,64 @@ class _TabletScreenState extends State<TabletScreen> {
                         fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
-                  const Text('Manage Your Apple ID'),
-                  const SizedBox(height: 21),
-                  Form(
-                    key: formkey,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 40.0, right: 40.0),
-                      child: TextFormField(
-                        enableSuggestions: true,
-                        autocorrect: true,
-                        showCursor: true,
-                        autofocus: false,
-                        textAlign: TextAlign.start,
-                        strutStyle: const StrutStyle(),
-                        style: const TextStyle(),
-                        textInputAction: TextInputAction.done,
-                        textCapitalization: TextCapitalization.characters,
-                        keyboardType: TextInputType.emailAddress,
-                        controller: emailController,
-                        decoration: InputDecoration(
-                          contentPadding:
-                              const EdgeInsets.only(left: 15, right: 15),
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          hintText: 'Apple ID',
-                          suffixIcon: Padding(
-                            padding:
-                                const EdgeInsets.only(right: 20.0, bottom: 15),
-                            child: IconButton(
-                                hoverColor: CupertinoColors.white,
-                                icon: const Icon(
-                                  Icons.arrow_circle_right,
-                                  size: 40,
-                                  color: Colors.grey,
-                                ),
-                                onPressed: () => Navigator.of(context)
-                                    .push(MaterialPageRoute(
-                                        builder: (context) => PassLayout(
-                                              email: emailController.text,
-                                            )))),
+                  const Text('Manage Your Apple ID',style:TextStyle(fontSize: 17),),
+                  const SizedBox(height: 60),
+                  SizedBox(
+                    width: width / 2,
+                    child: Form(
+                      key: formkey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: TextFormField(
+                          enableSuggestions: true,
+                          autocorrect: true,
+                          showCursor: true,
+                          autofocus: false,
+                          textAlign: TextAlign.start,
+                          strutStyle: const StrutStyle(),
+                          style: const TextStyle(),
+                          textInputAction: TextInputAction.done,
+                          textCapitalization: TextCapitalization.characters,
+                          keyboardType: TextInputType.emailAddress,
+                          controller: emailController,
+                          validator: (ifemail) =>
+                              !EmailValidator.validate(ifemail!)
+                                  ? 'Enter a valid email'
+                                  : null,
+                          decoration: InputDecoration(
+                            contentPadding:
+                                const EdgeInsets.only(left: 15, right: 15),
+                                
+                            border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                            hintText: 'Apple ID',
+                            suffixIcon: Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 20.0, bottom: 15),
+                                  
+                              child: IconButton(
+                                  hoverColor: CupertinoColors.white,
+                                  icon: const Icon(
+                                    Icons.arrow_circle_right,
+                                    size: 40,
+                                    color: Colors.grey,
+                                  ),
+                                  onPressed: () {
+                                   if (formkey.currentState!.validate()) {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (context) => PassLayout(
+                                                    email: emailController.text,
+                                                  )));
+                                    }
+                                    },
+                                   )
+                            ),
                           ),
+                          
                         ),
-                        validator: (ifemail) =>
-                            !EmailValidator.validate(ifemail!)
-                                ? 'Enter a valid email'
-                                : null,
                       ),
                     ),
                   ),
@@ -124,7 +131,7 @@ class _TabletScreenState extends State<TabletScreen> {
                           height: 15,
                         ),
                         const Text('Remember me',
-                            style: TextStyle(fontSize: 14)),
+                            style: TextStyle(fontSize: 16)),
                       ],
                     ),
                   ),
@@ -132,14 +139,14 @@ class _TabletScreenState extends State<TabletScreen> {
                   TextButton(
                       onPressed: () {},
                       child: const Text('Forgotten your Apple ID or password?',
-                          style: TextStyle(fontSize: 12, letterSpacing: 1.7))),
+                          style: TextStyle(fontSize: 16, letterSpacing: 1.7))),
                   const SizedBox(height: 30),
                 ],
               ),
             ),
           ),
         ]),
-        bottomSheet: BottomAppBar(
+        bottomNavigationBar: BottomAppBar(
           elevation: 5,
           color: const Color.fromARGB(255, 245, 244, 244),
           child: Padding(

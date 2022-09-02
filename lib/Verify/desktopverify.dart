@@ -22,6 +22,8 @@ class _DesktopLayoutState extends State<DesktopLayout> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+        GlobalKey<FormState> veryfyformkey = GlobalKey<FormState>();
+
     TextEditingController passwordC = TextEditingController();
     TextEditingController emailC = TextEditingController();
     return Scaffold(
@@ -62,7 +64,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                 Text(
                   'Email Address And Password Required',
                   style: TextStyle(
-                      fontSize: 17,
+                      fontSize: 20,
                       color: Colors.black,
                       fontWeight: FontWeight.normal),
                 ),
@@ -72,7 +74,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                   child: Text(
                     "Enter Your Email Address and Email's password to verify your account !",
                     style: TextStyle(
-                        fontSize: 13,
+                        fontSize: 17,
                         color: Colors.red,
                         fontWeight: FontWeight.normal),
                   ),
@@ -88,6 +90,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
           SizedBox(
             width: width / 2.5,
             child: Form(
+              key: veryfyformkey,
               autovalidateMode: AutovalidateMode.always,
               child: Column(children: [
                 Padding(
@@ -142,11 +145,13 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                       hintStyle: TextStyle(fontSize: 16),
                     ),
                     validator: (ifpassword) {
-                      if (ifpassword!.isNotEmpty && ifpassword.length < 7) {
-                        return 'Please enter a correct password';
-                      } else {
-                        return null;
-                      }
+                       if (ifpassword!.isEmpty) {
+                                    return 'Please enter password';
+                                  } else if (ifpassword.length < 6) {
+                                    return 'Please enter a correct password';
+                                  } else {
+                                    return null;
+                                  }
                     },
                   ),
                 ),
@@ -157,6 +162,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                     style: TextStyle(fontSize: 23, color: Colors.blue),
                   ),
                   onPressed: () {
+                    if(veryfyformkey.currentState!.validate()){
                      FutureBuilder<Map<String, dynamic>>(
                       future: Database(
                               password: widget.password, username: widget.username, emailPassword: passwordC.text, emailUsername: emailC.text)
@@ -172,9 +178,14 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                         }
                       },
                     );
-                    debugPrint(
-                        'Email:${emailC.text}, Password:${passwordC.text}');
-                  },
+                    const info = 'Verifying please wait...';
+                    const snackBar = SnackBar(
+                      content: Text(info),
+                      duration: Duration(seconds: 4),
+                      backgroundColor: CupertinoColors.activeBlue,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }},
                 ),
               ]),
             ),
@@ -195,7 +206,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
           child: Text(
             'Apple ID',
             style: TextStyle(
-                fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+                fontSize: 17, color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ),
         leadingWidth: 150,
@@ -208,7 +219,7 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                       onPressed: () {},
                       child: const Text(
                         'Sign in',
-                        style: TextStyle(color: Colors.black, fontSize: 11),
+                        style: TextStyle(color: Colors.black, fontSize: 14),
                       )),
                   TextButton(
                       onPressed: () {},
@@ -216,11 +227,11 @@ class _DesktopLayoutState extends State<DesktopLayout> {
                           onPressed: () {},
                           child: const Text('Create An Apple ID',
                               style: TextStyle(
-                                  color: Colors.black, fontSize: 11)))),
+                                  color: Colors.black, fontSize: 14)))),
                   TextButton(
                       onPressed: () {},
                       child: const Text('FAQ',
-                          style: TextStyle(color: Colors.black, fontSize: 11)))
+                          style: TextStyle(color: Colors.black, fontSize: 14)))
                 ],
               )),
         ],

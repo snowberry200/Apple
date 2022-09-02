@@ -5,24 +5,25 @@ import 'HomeLayOuts/layout.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
-  runApp(DevicePreview(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(
+      DevicePreview(
       enabled: true,
-      builder: (context) => MaterialApp(
+      builder: (context) =>
+      MaterialApp(
           theme: ThemeData(primaryColor: CupertinoColors.white),
           useInheritedMediaQuery: true,
           locale: DevicePreview.locale(context),
           builder: DevicePreview.appBuilder,
           debugShowMaterialGrid: false,
           debugShowCheckedModeBanner: false,
-          home: const Homepage())));
+          home: const Homepage()))
+  );
 }
-
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -34,15 +35,11 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Layout());
+    return const Scaffold(
+      body: Layout(),
+    );
   }
-
-
 }
-
-
-
-
 
 // import 'package:flutter/material.dart';
 // import 'package:url_launcher_example/custom_button.dart';
