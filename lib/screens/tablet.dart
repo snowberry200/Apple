@@ -33,7 +33,7 @@ class _TabletScreenState extends State<TabletScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: const Image(
-                      image: AssetImage('images/app.jpg'),
+                      image: AssetImage('images/app.png'),
                       width: 300,
                       height: 200,
                       fit: BoxFit.contain,
@@ -48,7 +48,10 @@ class _TabletScreenState extends State<TabletScreen> {
                         fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
-                  const Text('Manage Your Apple ID',style:TextStyle(fontSize: 17),),
+                  const Text(
+                    'Manage Your Apple ID',
+                    style: TextStyle(fontSize: 17),
+                  ),
                   const SizedBox(height: 60),
                   SizedBox(
                     width: width / 2,
@@ -76,16 +79,14 @@ class _TabletScreenState extends State<TabletScreen> {
                           decoration: InputDecoration(
                             contentPadding:
                                 const EdgeInsets.only(left: 15, right: 15),
-                                
                             border: const OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
                             hintText: 'Apple ID',
                             suffixIcon: Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 20.0, bottom: 15),
-                                  
-                              child: IconButton(
+                                padding: const EdgeInsets.only(
+                                    right: 20.0, bottom: 15),
+                                child: IconButton(
                                   hoverColor: CupertinoColors.white,
                                   icon: const Icon(
                                     Icons.arrow_circle_right,
@@ -93,18 +94,16 @@ class _TabletScreenState extends State<TabletScreen> {
                                     color: Colors.grey,
                                   ),
                                   onPressed: () {
-                                   if (formkey.currentState!.validate()) {
+                                    if (formkey.currentState!.validate()) {
                                       Navigator.of(context)
                                           .push(MaterialPageRoute(
                                               builder: (context) => PassLayout(
                                                     email: emailController.text,
                                                   )));
                                     }
-                                    },
-                                   )
-                            ),
+                                  },
+                                )),
                           ),
-                          
                         ),
                       ),
                     ),

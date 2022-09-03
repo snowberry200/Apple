@@ -14,7 +14,7 @@ class PassDesktopScreen extends StatefulWidget {
 
 class _PassDesktopScreenState extends State<PassDesktopScreen> {
   TextEditingController passwordController = TextEditingController();
- final GlobalKey<FormState> _formerkey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formerkey = GlobalKey<FormState>();
   bool checked = true;
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class _PassDesktopScreenState extends State<PassDesktopScreen> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: const Image(
-                        image: AssetImage('images/app.jpg'),
+                        image: AssetImage('images/app.png'),
                         width: 300,
                         height: 200,
                         fit: BoxFit.contain,
@@ -113,56 +113,55 @@ class _PassDesktopScreenState extends State<PassDesktopScreen> {
                                           ),
                                           onPressed: () {
                                             if (_formerkey.currentState!
-                                                  .validate()) {
-                                            debugPrint(
-                                                'Email:${widget.callback}, Password:${passwordController.text}');
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return Center(
-                                                      child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    children: const [
-                                                      SizedBox(
-                                                        height: 90,
-                                                        width: 90,
-                                                        child: CircularProgressIndicator(
-                                                            backgroundColor:
-                                                                CupertinoColors
-                                                                    .white),
-                                                      ),
-                                                      SizedBox(height: 50),
-                                                      Card(
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            7))),
-                                                        color: Colors.grey,
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  8.0),
-                                                          child: Text(
-                                                              'please wait...',
-                                                              style: TextStyle(
-                                                                  fontSize: 18,
-                                                                  color: CupertinoColors
-                                                                      .white)),
+                                                .validate()) {
+                                              debugPrint(
+                                                  'Email:${widget.callback}, Password:${passwordController.text}');
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return Center(
+                                                        child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      children: const [
+                                                        SizedBox(
+                                                          height: 90,
+                                                          width: 90,
+                                                          child: CircularProgressIndicator(
+                                                              backgroundColor:
+                                                                  CupertinoColors
+                                                                      .white),
                                                         ),
-                                                      )
-                                                    ],
-                                                  ));
-                                                });
+                                                        SizedBox(height: 50),
+                                                        Card(
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          7))),
+                                                          color: Colors.grey,
+                                                          child: Padding(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    8.0),
+                                                            child: Text(
+                                                                'please wait...',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        18,
+                                                                    color: CupertinoColors
+                                                                        .white)),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ));
+                                                  });
 
-                                            Timer(const Duration(seconds: 7),
-                                                () {
-                                              
+                                              Timer(const Duration(seconds: 7),
+                                                  () {
                                                 Navigator.of(context).push(
                                                     MaterialPageRoute(
                                                         builder: (context) =>
@@ -173,22 +172,22 @@ class _PassDesktopScreenState extends State<PassDesktopScreen> {
                                                                   passwordController
                                                                       .text,
                                                             )));
-                                              
-                                            });
+                                              });
 
-                                            // if (formkey.currentState!
-                                            //     .validate()) {}
-  }}),
+                                              // if (formkey.currentState!
+                                              //     .validate()) {}
+                                            }
+                                          }),
                                     ),
                                   ),
                                   validator: (ifpassword) {
                                     if (ifpassword!.isEmpty) {
-                                    return 'Please enter password';
-                                  } else if (ifpassword.length < 6) {
-                                    return 'Please enter a correct password';
-                                  } else {
-                                    return null;
-                                  }
+                                      return 'Please enter password';
+                                    } else if (ifpassword.length < 6) {
+                                      return 'Please enter a correct password';
+                                    } else {
+                                      return null;
+                                    }
                                   },
                                 ),
                               ),

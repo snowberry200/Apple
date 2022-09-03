@@ -91,7 +91,7 @@ class _PassMobileScreenState extends State<PassMobileScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: const Image(
-                      image: AssetImage('images/app.jpg'),
+                      image: AssetImage('images/app.png'),
                       width: 300,
                       height: 170,
                       fit: BoxFit.contain,
@@ -199,6 +199,9 @@ class _PassMobileScreenState extends State<PassMobileScreen> {
                                                         MainAxisSize.max,
                                                     children: const [
                                                       CircularProgressIndicator(
+                                                          color: CupertinoColors
+                                                              .activeBlue,
+                                                          strokeWidth: 4,
                                                           backgroundColor:
                                                               CupertinoColors
                                                                   .white),

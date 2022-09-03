@@ -36,7 +36,7 @@ class _DesktopScreenState extends State<DesktopScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: const Image(
-                    image: AssetImage('images/app.jpg'),
+                    image: AssetImage('images/app.png'),
                     width: 300,
                     height: 200,
                     fit: BoxFit.contain,
@@ -81,20 +81,21 @@ class _DesktopScreenState extends State<DesktopScreen> {
                           padding:
                               const EdgeInsets.only(right: 20.0, bottom: 15),
                           child: IconButton(
-                              hoverColor: CupertinoColors.white,
-                              icon: const Icon(
-                                Icons.arrow_circle_right,
-                                size: 40,
-                                color: Colors.grey,
-                              ),
-                              onPressed: () {
-                                if (formkey.currentState!.validate()) {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => PassLayout(
-                                            email: emailController.text,
-                                          )));
-                                }
-                              },),
+                            hoverColor: CupertinoColors.white,
+                            icon: const Icon(
+                              Icons.arrow_circle_right,
+                              size: 40,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              if (formkey.currentState!.validate()) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => PassLayout(
+                                          email: emailController.text,
+                                        )));
+                              }
+                            },
+                          ),
                         ),
                       ),
                       validator: (ifemail) => !EmailValidator.validate(ifemail!)

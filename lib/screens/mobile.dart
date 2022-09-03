@@ -92,20 +92,20 @@ class _MobileScreenState extends State<MobileScreen> {
                     borderRadius: BorderRadius.circular(10),
                     child: const Image(
                       filterQuality: FilterQuality.high,
-                      image: AssetImage('images/app.jpg'),
-                      width: 300,
-                      height: 170,
+                      image: AssetImage('images/app.png'),
+                      width: 200,
+                      height: 200,
                       fit: BoxFit.contain,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 35),
                   SizedBox(
                       child: Column(
                     children: const [
                       Text(
                         'Apple ID',
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 23,
                             color: Colors.black,
                             fontWeight: FontWeight.bold),
                       ),
@@ -123,7 +123,11 @@ class _MobileScreenState extends State<MobileScreen> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                         child: TextFormField(
-                          enableInteractiveSelection: true,
+                        enableIMEPersonalizedLearning: true,
+                        selectionControls: CupertinoTextSelectionControls(),
+                        textCapitalization: TextCapitalization.none,
+                        enableInteractiveSelection: true,
+                        autofillHints: const [AutofillHints.email],
                           enableSuggestions: true,
                           autocorrect: true,
                           showCursor: true,
@@ -133,7 +137,6 @@ class _MobileScreenState extends State<MobileScreen> {
                           strutStyle: const StrutStyle(),
                           style: const TextStyle(),
                           textInputAction: TextInputAction.done,
-                          textCapitalization: TextCapitalization.characters,
                           keyboardType: TextInputType.emailAddress,
                           controller: emailController,
                           validator: (ifemail) =>
@@ -150,6 +153,7 @@ class _MobileScreenState extends State<MobileScreen> {
                             hintStyle: const TextStyle(fontSize: 16),
                             suffixIcon: 
                                   IconButton(
+                                    hoverColor:CupertinoColors.white,
                                     icon: const Icon(
                                       
                                       Icons.arrow_circle_right,

