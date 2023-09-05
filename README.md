@@ -1,3 +1,6 @@
+THIS IS STRICTLY FOR LEARNING PURPOSE ONLY
+
+
 # apple
 
 A new Flutter project.
